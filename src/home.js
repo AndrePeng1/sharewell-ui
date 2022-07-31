@@ -3,57 +3,21 @@ import Logo from './sharewell-logo.png'
 import { Table } from 'antd';
 import 'antd/dist/antd.css'
 import './index.css';
-//import { dummyNoteData, dummyNoteColumns } from './dummyNoteColumns.js'
+import { dummyNoteData, dummyNoteColumns } from './dummyNoteColumns.js'
 import { Resizable } from 'react-resizable';
-
-const dummyNoteData = [
-    {
-        key: '1',
-        message: 'You are cool',
-        sender: 'Andre Peng',
-    },
-    {
-        key: '2',
-        message: 'You are the cutest!',
-        sender: 'Hyerin Yoon',
-    },
-    {
-        key: '3',
-        message: 'You have a big heart!',
-        sender: 'FooBar',
-    },
-];
-
-const dummyNoteColumns = [
-  {
-    title: 'Sender',
-    dataIndex: 'sender',
-    key: 'sender',
-    width: 200,
-  },
-  {
-    title: 'Note',
-    dataIndex: 'message',
-    key: 'message',
-    width: 500,
-  },
-];
 
 // ===================================
 
-class SharewellLogo extends React.Component {
-  render() {
+function SharewellLogo() {
     return (
         <div>
           <img src={Logo} alt="logo" />
         </div>
     );
-  }
 }
 
 /**
 * Only columns with prop = 'width' will be resizable.
-* Last column is not resizable
 */
 const ResizableHeader = (props) => {
   const { onResize, width, ...restProps } = props;
@@ -117,16 +81,14 @@ function NoteTable () {
       );
 }
 
-class WriteNoteButton extends React.Component {
-    render() {
-        return (
-            <div className="write-note-button">
-                <button>
-                    Write a Note
-                </button>
-            </div>
-        )
-    }
+function WriteNoteButton() {
+    return (
+        <div className="write-note-button">
+            <button>
+                Write a Note
+            </button>
+        </div>
+    )
 }
 
 class HomePage extends React.Component {
