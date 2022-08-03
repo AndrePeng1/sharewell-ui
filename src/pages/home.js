@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import Logo from './sharewell-logo.png'
+import Logo from '../media/sharewell-logo.png'
 import { Table } from 'antd';
 import 'antd/dist/antd.css'
 import './index.css';
-import { dummyNoteData, dummyNoteColumns } from './dummyNoteColumns.js'
+import { dummyNoteData, dummyNoteColumns } from '../constants/dummyNoteColumns.js'
 import { Resizable } from 'react-resizable';
-
-// ===================================
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 function SharewellLogo() {
     return (
@@ -84,23 +84,40 @@ function NoteTable () {
 function WriteNoteButton() {
     return (
         <div className="write-note-button">
-            <button>
+            <button onClick={WriteNoteModal}>
                 Write a Note
             </button>
         </div>
     )
 }
 
-class HomePage extends React.Component {
-    render() {
-        return (
-            <div className="home">
-                <SharewellLogo />
-                <NoteTable />
-                <WriteNoteButton />
-            </div>
-        )
-    }
+function WriteNoteModal() {
+  return (
+    <Modal.Dialog>
+      <Modal.Header closeButton>
+        <Modal.Title>Write a Note</Modal.Title>
+      </Modal.Header>
+
+      <Modal.Body>
+        <p>Modal body text goes here.</p>
+      </Modal.Body>
+
+      <Modal.Footer>
+        <Button variant="secondary">Close</Button>
+        <Button variant="primary">Save changes</Button>
+      </Modal.Footer>
+    </Modal.Dialog>
+  );
+}
+
+function HomePage() {
+    return (
+        <div className="home">
+            <SharewellLogo />
+            <NoteTable />
+            <WriteNoteButton />
+        </div>
+    )
 }
 
 const App = () => <HomePage />
