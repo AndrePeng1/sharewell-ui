@@ -13,6 +13,7 @@ import { getFirestore } from "firebase/firestore";
 import { collection, doc, addDoc, getDocs } from "firebase/firestore"; 
 import { useEffect } from 'react';
 
+
 const ENCOURAGEMENTS_COLLECTION = "encouragements"
 
 const firebaseConfig = {
@@ -36,6 +37,13 @@ function SharewellLogo() {
           <img src={Logo} alt="logo" />
         </div>
     );
+}
+
+function NoteSavedText({ isNoteSaved }) {
+  if (isNoteSaved) {
+      return <body>Note saved!</body>
+  }
+  return null;
 }
 
 /**
@@ -115,24 +123,19 @@ function NoteTable () {
 
 async function loadNotes() {
   const querySnapshot = await getDocs(collection(db, ENCOURAGEMENTS_COLLECTION));
-  querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    console.log(doc.id, " => ", doc.data());
-  });
   return querySnapshot.docs.map(doc => doc.data());
 
 }
 
 function renderNotes(note) {
   const formattedNotes = [];
-  // iterate through notes, create a JSON per note and append JSON to renderedNotes
   note.forEach((note) => {
     formattedNotes.push({
       key: note.id,
       name: note.name,
       note: note.note,
       react: true,
-      score: 5000,
+      score: note.score,
       delete: true
     });
   });
@@ -159,7 +162,7 @@ function WriteNoteButton() {
       <Button type="primary" onClick={showModal}>
         Write a Note
       </Button>
-      <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+      <Modal title="Basic Modal" open={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
         <NoteForm/> 
       </Modal>
     </div>
@@ -169,6 +172,8 @@ function WriteNoteButton() {
 function NoteForm() {
   const [name, setName] = useState('');
   const [note, setNote] = useState('');
+  const [isNoteSaved, setIsNoteSaved] = useState(false);
+
 
   const handleNameChange = (event) => {
     setName(event.target.value);
@@ -202,22 +207,26 @@ function NoteForm() {
         <Input.TextArea onChange={handleNoteChange} />
       </Form.Item>
       <Form.Item>
-        <Button type="primary" htmlType="submit" onClick={() => saveNote(name, note)}>
+        <Button type="primary" htmlType="submit" onClick={() => {
+          if (name !== '' && note !== '') {
+            saveNote(name, note);
+            setIsNoteSaved(true);
+          }
+        }}>
           Submit
         </Button>
       </Form.Item>
+      <NoteSavedText isNoteSaved={isNoteSaved}></NoteSavedText>
     </Form>
   );
 };
 
 async function saveNote(name, note) {
-  console.log("Name of sender: " + name);
-  console.log("Note: " + note);
-  const addDocResult = await addDoc(collection(db, "encouragements"), {
+  await addDoc(collection(db, ENCOURAGEMENTS_COLLECTION), {
     name: name,
-    note: note
+    note: note,
+    score: 0
   });
-  console.log("Document written with ID: ", addDocResult.id);
 }
 
 const validateMessages = {
