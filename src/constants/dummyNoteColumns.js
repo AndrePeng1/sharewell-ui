@@ -6,24 +6,24 @@ import Trash from '../media/delete_orig_10.png'
 export const dummyNoteData = [
   {
       key: '1',
-      message: 'You are cool',
-      sender: 'Andre Peng',
+      note: 'You are cool',
+      name: 'Andre Peng',
       react: true,
       score: 100,
       delete: true,
   },
   {
       key: '2',
-      message: 'You are the cutest!',
-      sender: 'Hyerin Yoon',
+      note: 'You are the cutest!',
+      name: 'Hyerin Yoon',
       react: true,
       score: 50,
       delete: true,
   },
   {
       key: '3',
-      message: 'You have a big heart!',
-      sender: 'FooBar',
+      note: 'You have a big heart!',
+      name: 'FooBar',
       react: true,
       score: 200,
       delete: true,
@@ -33,14 +33,23 @@ export const dummyNoteData = [
 export const dummyNoteColumns = [
   {
     title: 'Sender',
-    dataIndex: 'sender',
-    key: 'sender',
+    dataIndex: 'name',
+    key: 'name',
     width: 100,
+    filters: [
+      {
+        text: 'Andre Peng',
+        value: 'Andre Peng',
+      },
+    ],
+    // specify the condition of filtering result
+  // here is that finding the name started with `value`
+    onFilter: (value, record) => record.sender.indexOf(value) === 0,
   },
   {
     title: 'Note',
-    dataIndex: 'message',
-    key: 'message',
+    dataIndex: 'note',
+    key: 'note',
     width: 500,
   },
   {
@@ -57,7 +66,7 @@ export const dummyNoteColumns = [
     },
   },
   {
-    title: 'Your Score',
+    title: 'Upvote Count',
     dataIndex: 'score',
     key: 'score',
     width: 50,
